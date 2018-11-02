@@ -116,11 +116,39 @@ def depthFirstSearch(problem):
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
+    fringe=util.Queue()
+    visited=set()
+    """ added visited list to prevent duplication in fringe"""
+    closed=set()
+    initial_state_name = problem.getStartState()
+    initial_state=(initial_state_name , [] , 0)
+    """ state STRUCT -> (state_name,state_path,state_cost) """
+    fringe.push(initial_state)
+    visited.add(initial_state_name)
+
+
+    while not fringe.isEmpty():
+        expanded_state= fringe.pop()
+        (expanded_state_name,expanded_state_path,expanded_state_cost)=expanded_state
+        closed.add(expanded_state_name)
+        if(problem.isGoalState(expanded_state_name)):
+            return expanded_state_path
+        for state_name , state_action , state_cost in problem.getSuccessors(expanded_state_name):
+            if not state_name in visited:
+                if not state_name in closed:
+                    new_state_name = state_name
+                    new_state_path = expanded_state_path + [state_action]
+                    new_state_cost = expanded_state_cost + state_cost
+                    new_state=(new_state_name,new_state_path,new_state_cost)
+                    fringe.push(new_state)
+                    visited.add(new_state_name)
+
+    return ["GOAL NOT FOUND"]
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 
 def uniformCostSearch(problem):
-    """Search the node of least total cost first."""
+    """Search the node of least total cost first."""  
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 
