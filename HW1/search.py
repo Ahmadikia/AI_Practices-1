@@ -150,13 +150,13 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     fringe=util.PriorityQueue()
-    visited={}
+    visitedcost={}
     closed=set()
     initial_state_name = problem.getStartState()
     initial_state=(initial_state_name , [] , 0)
     """ state STRUCT -> (state_name,state_path,state_cost) """
     fringe.push(initial_state,0)
-    visited[initial_state_name]=0
+    visitedcost[initial_state_name]=0
 
 
     while not fringe.isEmpty():
@@ -172,11 +172,11 @@ def uniformCostSearch(problem):
                 new_state_cost = expanded_state_cost + state_cost
                 new_state=(new_state_name,new_state_path,new_state_cost)
                 try:
-                    if visited[new_state_name]>new_state_cost :
+                    if visitedcost[new_state_name]>new_state_cost :
                         fringe.push(new_state,new_state_cost)
                 except:
                     fringe.push(new_state,new_state_cost)
-                visited[new_state_name]=new_state_cost
+                visitedcost[new_state_name]=new_state_cost
 
     return ["GOAL NOT FOUND"]
 
@@ -193,6 +193,38 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
+    fringe=util.PriorityQueue()
+    visitedfn={}
+    closed=set()
+    initial_state_name = problem.getStartState()
+    initial_state=(initial_state_name , [] , 0)
+    """ state STRUCT -> (state_name,state_path,state_cost) """
+    initial_state_fn=0 + heuristic(initial_state_name,problem)
+    fringe.push(initial_state,initial_state_fn)
+    visitedfn[initial_state_name]=initial_state_fn
+
+
+    while not fringe.isEmpty():
+        expanded_state= fringe.pop()
+        (expanded_state_name,expanded_state_path,expanded_state_cost)=expanded_state
+        closed.add(expanded_state_name)
+        if(problem.isGoalState(expanded_state_name)):
+            return expanded_state_path
+        for state_name , state_action , state_cost in problem.getSuccessors(expanded_state_name):
+            if not state_name in closed:
+                new_state_name = state_name
+                new_state_path = expanded_state_path + [state_action]
+                new_state_cost = expanded_state_cost + state_cost
+                new_state=(new_state_name,new_state_path,new_state_cost)
+                new_state_fn = new_state_cost + heuristic(new_state_name,problem)
+                try:
+                    if visitedfn[new_state_name]>new_state_fn :
+                        fringe.push(new_state,new_state_fn)
+                except:
+                    fringe.push(new_state,new_state_fn)
+                visitedfn[new_state_name]=new_state_fn
+
+    return ["GOAL NOT FOUND"]
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
 
