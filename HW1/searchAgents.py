@@ -267,6 +267,7 @@ def euclideanHeuristic(position, problem, info={}):
 #####################################################
 
 class CornersProblem(search.SearchProblem):
+            # <<<< i didn't see a CornersProblem in search.py ==> i skip this class >>>>
     """
     This search problem finds paths through all four corners of a layout.
 
@@ -287,7 +288,7 @@ class CornersProblem(search.SearchProblem):
         self._expanded = 0 # DO NOT CHANGE; Number of search nodes expanded
         # Please add any code here which you would like to use
         # in initializing the problem
-        
+
         "*** YOUR CODE HERE ***"
 
     def getStartState(self):
@@ -295,20 +296,13 @@ class CornersProblem(search.SearchProblem):
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        (x,y)=self.startingPosition
-        return (x,y)
-        "***     RISKY      ***"
-        "*** YOUR CODE HERE ***"
+
         util.raiseNotDefined()
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        currentFood = state.getFood()
-        if currentFood[x][y] == True:
-            return True
-        return False
 
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
@@ -332,14 +326,7 @@ class CornersProblem(search.SearchProblem):
             #   dx, dy = Actions.directionToVector(action)
             #   nextx, nexty = int(x + dx), int(y + dy)
             #   hitsWall = self.walls[nextx][nexty]
-            x,y = state.currentPosition()
-            dx,dy = Actions.directionToVector(action)
-            nextx, nexty = int(x + dx), int(y + dy)
-            hitsWall = self.walls[nextx][nexty]
-            nextState=
-            "***     MISSING    ***"
-            if not hitsWall:
-                successors.append(nextState)
+
 
             "*** YOUR CODE HERE ***"
 
@@ -375,7 +362,7 @@ def cornersHeuristic(state, problem):
     """
     corners = problem.corners # These are the corner coordinates
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
-    dist = state.
+    """ i didn't see a CornersProblem in search.py ==> i skip this part"""
     "*** YOUR CODE HERE ***"
     return 0 # Default to trivial solution
 
@@ -470,6 +457,7 @@ def foodHeuristic(state, problem):
     problem.heuristicInfo['wallCount']
     """
     position, foodGrid = state
+
     "*** YOUR CODE HERE ***"
     return 0
 
@@ -500,6 +488,9 @@ class ClosestDotSearchAgent(SearchAgent):
         food = gameState.getFood()
         walls = gameState.getWalls()
         problem = AnyFoodSearchProblem(gameState)
+
+        return search.aStarSearch(problem)
+
 
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
@@ -536,6 +527,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         complete the problem definition.
         """
         x,y = state
+        food_grid = self.food
+        return food_grid[x][y]
 
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()

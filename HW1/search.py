@@ -97,16 +97,17 @@ def depthFirstSearch(problem):
     while not fringe.isEmpty():
         expanded_state= fringe.pop()
         (expanded_state_name,expanded_state_path,expanded_state_cost)=expanded_state
-        closed.add(expanded_state_name)
-        if(problem.isGoalState(expanded_state_name)):
-            return expanded_state_path
-        for state_name , state_action , state_cost in problem.getSuccessors(expanded_state_name):
-            if not state_name in closed:
-                new_state_name = state_name
-                new_state_path = expanded_state_path + [state_action]
-                new_state_cost = expanded_state_cost + state_cost
-                new_state=(new_state_name,new_state_path,new_state_cost)
-                fringe.push(new_state)
+        if not expanded_state_name in closed:
+            closed.add(expanded_state_name)
+            if(problem.isGoalState(expanded_state_name)):
+                return expanded_state_path
+            for state_name , state_action , state_cost in problem.getSuccessors(expanded_state_name):
+                if not state_name in closed:
+                    new_state_name = state_name
+                    new_state_path = expanded_state_path + [state_action]
+                    new_state_cost = expanded_state_cost + state_cost
+                    new_state=(new_state_name,new_state_path,new_state_cost)
+                    fringe.push(new_state)
 
     return ["GOAL NOT FOUND"]
 
@@ -162,6 +163,8 @@ def uniformCostSearch(problem):
     while not fringe.isEmpty():
         expanded_state= fringe.pop()
         (expanded_state_name,expanded_state_path,expanded_state_cost)=expanded_state
+        if expanded_state_name in closed:
+            pass
         closed.add(expanded_state_name)
         if(problem.isGoalState(expanded_state_name)):
             return expanded_state_path
